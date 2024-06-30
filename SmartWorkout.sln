@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartWorkout", "SmartWorkout\SmartWorkout.csproj", "{AD030D1F-A825-4354-890B-62D3CD768390}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartWorkout", "SmartWorkout\SmartWorkout.csproj", "{AD030D1F-A825-4354-890B-62D3CD768390}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartWorkout.DataAccess", "SmartWorkout.DataAccess\SmartWorkout.DataAccess.csproj", "{C2D1EC85-4687-424D-A222-AB07D5C115F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartWorkout.DataAccess", "SmartWorkout.DataAccess\SmartWorkout.DataAccess.csproj", "{C2D1EC85-4687-424D-A222-AB07D5C115F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

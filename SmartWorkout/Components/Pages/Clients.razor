@@ -1,0 +1,48 @@
+﻿@page "/clients"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+<h3>Clients</h3>
+@if(Users==null){
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Surname</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Weight</th>
+				<th>Age</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Client c in Users)
+			{
+				<tr>
+					<td>@c.Id</td>
+					<td>@c.Name</td>
+					<td>@c.Surname</td>
+					<td>@c.Email</td>
+					<td>@c.Phone</td>
+					<td>@c.Weight</td>
+					<td>@c.Age</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+}
+@code {
+	private DataAccess.Entities.Client[] Users;
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		SmartWorkoutContext smartWorkoutContext = new SmartWorkoutContext();
+		Users = smartWorkoutContext.Users.ToArray();
+	}
+}

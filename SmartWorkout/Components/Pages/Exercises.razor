@@ -1,0 +1,39 @@
+﻿@page "/exercises"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+<h3>Exercises</h3>
+@if (Exercise == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(Exercise e in Exercise)
+			{
+			<tr>
+				<th>c.Id</th>
+				<th>c.Name</th>
+			</tr>
+			}
+		</tbody>
+	</table>
+}
+@code {
+	private DataAccess.Entities.Exercise[] Exercise;
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		SmartWorkoutContext smartWorkoutContext = new SmartWorkoutContext();
+		Exercise = smartWorkoutContext.Exercises.ToArray();
+	}
+
+}
