@@ -2,6 +2,8 @@
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using SmartWorkout.DataAccess
 @using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@using SmartWorkout.DataAccess.Repository
 <h3>Clients</h3>
 @if(Users==null){
 	<p><em>Loading...</em></p>
@@ -41,8 +43,7 @@ else
 	private DataAccess.Entities.Client[] Users;
 	protected override async Task OnInitializedAsync()
 	{
-		await Task.Delay(500);
-		SmartWorkoutContext smartWorkoutContext = new SmartWorkoutContext();
-		Users = smartWorkoutContext.Users.ToArray();
+		IGenericRepository<Client> repository = new ClientRepository(new SmartWorkoutContext());
+		Users = repository.GetAll().ToArray();
 	}
 }

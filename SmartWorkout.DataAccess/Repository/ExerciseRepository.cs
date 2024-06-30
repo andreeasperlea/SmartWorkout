@@ -4,53 +4,53 @@ using SmartWorkout.DataAccess.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartWorkout.DataAccess.Repository
 {
-	public class ClientRepository : IGenericRepository<Client>
+	public class ExerciseRepository : IGenericRepository<Exercise>
 	{
 		private readonly SmartWorkoutContext _context;
 
-		public ClientRepository(SmartWorkoutContext context)
+		public ExerciseRepository(SmartWorkoutContext context)
+
 		{
 			_context = context;
 		}
 
-		public void Add(in Client sender)
+		public void Add(in Exercise sender)
 		{
-			 _context.Add(sender).State = EntityState.Added;
+			_context.Add(sender).State = EntityState.Added;
 		}
 
-		public IEnumerable<Client> GetAll()
+		public IEnumerable<Exercise> GetAll()
 		{
-			return _context.Users.ToList();
+			return _context.Exercises.ToList();
 		}
 
-		public Client? GetById(int Id)
+		public Exercise? GetById(int Id)
 		{
-			return _context.Users.Find(Id);
+			return _context.Exercises.Find(Id);
 		}
 
 		public bool Remove(int Id)
 		{
-			var client= _context.Users.Find(Id);
-			if(client is { })
+			var exercise = _context.Exercises.Find(Id);
+			if (exercise is { })
 			{
-				_context.Users.Remove(client);
+				_context.Exercises.Remove(exercise);
 				return true;
 			}
 			return false;
 		}
 
-		public int Save(in Client sender)
+		public int Save(in Exercise sender)
 		{
 			return _context.SaveChanges();
 		}
 
-		public void Update(in Client sender)
+		public void Update(in Exercise sender)
 		{
 			_context.Entry(sender).State = EntityState.Modified;
 		}

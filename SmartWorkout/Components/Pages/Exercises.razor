@@ -2,6 +2,8 @@
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using SmartWorkout.DataAccess
 @using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@using SmartWorkout.DataAccess.Repository
 <h3>Exercises</h3>
 @if (Exercise == null)
 {
@@ -20,8 +22,8 @@ else
 			@foreach(Exercise e in Exercise)
 			{
 			<tr>
-				<th>c.Id</th>
-				<th>c.Name</th>
+				<th>@e.Id</th>
+				<th>@e.Name</th>
 			</tr>
 			}
 		</tbody>
@@ -31,9 +33,8 @@ else
 	private DataAccess.Entities.Exercise[] Exercise;
 	protected override async Task OnInitializedAsync()
 	{
-		await Task.Delay(500);
-		SmartWorkoutContext smartWorkoutContext = new SmartWorkoutContext();
-		Exercise = smartWorkoutContext.Exercises.ToArray();
+		IGenericRepository<Exercise> repository = new ExerciseRepository(new SmartWorkoutContext());
+		Exercise= repository.GetAll().ToArray();
 	}
 
 }
