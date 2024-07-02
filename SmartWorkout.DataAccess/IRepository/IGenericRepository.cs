@@ -11,10 +11,9 @@ namespace SmartWorkout.DataAccess.IRepository
 		IEnumerable<T> GetAll();
 		T? GetById(int Id);
 		bool Remove(int Id);
-		int Save(in T sender);
 
-		void Add(in T sender);
-		void Update(in T sender);
+		void Add(T obj);
+		void Update(T obj);
 
 	}
 }

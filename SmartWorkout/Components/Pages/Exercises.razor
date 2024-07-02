@@ -4,6 +4,7 @@
 @using SmartWorkout.DataAccess.Entities
 @using SmartWorkout.DataAccess.IRepository
 @using SmartWorkout.DataAccess.Repository
+@inject IGenericRepository<Exercise> ExerciseRepo;
 <h3>Exercises</h3>
 @if (Exercise == null)
 {
@@ -33,8 +34,9 @@ else
 	private DataAccess.Entities.Exercise[] Exercise;
 	protected override async Task OnInitializedAsync()
 	{
-		IGenericRepository<Exercise> repository = new ExerciseRepository(new SmartWorkoutContext());
-		Exercise= repository.GetAll().ToArray();
+		Exercise= ExerciseRepo.GetAll().ToArray();
 	}
+
+
 
 }

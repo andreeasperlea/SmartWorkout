@@ -1,5 +1,9 @@
 using SmartWorkout.Components;
 using SmartWorkout.DataAccess;
+using SmartWorkout.DataAccess.Entities;
+using SmartWorkout.DataAccess.IRepository;
+using SmartWorkout.DataAccess.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 builder.Services.AddDbContext<SmartWorkoutContext>();
+builder.Services.AddScoped<IGenericRepository<Client>, ClientRepository>();
+builder.Services.AddScoped<IGenericRepository<Exercise>, ExerciseRepository>();
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

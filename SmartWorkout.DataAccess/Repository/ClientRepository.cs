@@ -19,9 +19,10 @@ namespace SmartWorkout.DataAccess.Repository
 			_context = context;
 		}
 
-		public void Add(in Client sender)
+		public void Add(Client client)
 		{
-			 _context.Add(sender).State = EntityState.Added;
+			_context.Add(client);
+			_context.SaveChanges();
 		}
 
 		public IEnumerable<Client> GetAll()
@@ -37,22 +38,20 @@ namespace SmartWorkout.DataAccess.Repository
 		public bool Remove(int Id)
 		{
 			var client= _context.Users.Find(Id);
-			if(client is { })
+			if(client != null)
 			{
 				_context.Users.Remove(client);
+				_context.SaveChanges();
 				return true;
 			}
 			return false;
 		}
 
-		public int Save(in Client sender)
-		{
-			return _context.SaveChanges();
-		}
 
-		public void Update(in Client sender)
+		public void Update(Client client)
 		{
-			_context.Entry(sender).State = EntityState.Modified;
+			_context.Update(client);
+			_context.SaveChanges();
 		}
 	}
 }

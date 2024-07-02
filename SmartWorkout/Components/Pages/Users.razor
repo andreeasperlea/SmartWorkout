@@ -1,44 +1,77 @@
-﻿@page "/client"
-
+﻿
+@page "/client"
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@using SmartWorkout.DataAccess.Repository
 <h3 class="mb-5">Add Client</h3>
 
-<form class="">
+<EditForm FormName="AddUser" OnValidSubmit="SubmitForm" Model="@newUser" class="">
+	<DataAnnotationsValidator/>
 	<div class="form-group mb-3">
 		<label for="first-name">First Name</label>
-		<input type="text" class="w-25 form-control" id="first-name">
+		<InputText @bind-Value="@newUser.Name"></InputText>
+		<ValidationMessage For="@(() => newUser.Name)"/>
 	</div>
 	<div class="form-group mb-3">
 		<label for="last-name">Last Name</label>
-		<input type="text" class=" w-25 form-control" id="last-name">
+		<InputText @bind-Value="@newUser.Surname"></InputText>
+		<ValidationMessage For="@(() => newUser.Surname)" />
 	</div>
-	<div class="mb-3">
-		<label>Pick your gender</label>
-		<div class="d-flex">
-			<div class="form-check me-3">
-				<input class="form-check-input" type="radio" name="gender-male" id="gender-male" value="Male">
-				<label class="form-check-label" for="gender-male">
-					Male
-				</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="gender-female" id="gender-female" value="Female">
-				<label class="form-check-label" for="gender-female">
-					Female
-				</label>
-			</div>
-		</div>
+	<div class="mb-3 w-25">
+		<label for="exampleInputEmail1" class="form-label">Email address</label>
+		<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+		<InputText @bind-Value="@newUser.Email"></InputText>
+	</div>
+	<div class="form-group mb-3">
+		<label for="phone-number">Phone Number</label>
+		<InputText @bind-Value="@newUser.Phone"></InputText>
 	</div>
 	<div class="form-group mb-3">
 		<label for="weight">Weight (in kg)</label>
-		<input type="number" class=" w-25 form-control" id="weight">
+		<InputNumber @bind-Value="@newUser.Weight"></InputNumber>
 	</div>
 	<div class="form-group mb-3">
-		<label for="goal">Your Goal</label>
-		<input type="text" class=" w-25 form-control" id="goal">
+		<label for="age">Age</label>
+		<InputNumber @bind-Value="@newUser.Age"></InputNumber>
 	</div>
-</form>
+	<button type="submit" class="btn btn-primary">Submit</button>
 
+	@if (saved)
+	{
+		<p>The client has been created!</p>
+	}
+	@if (error)
+	{
+		<p>Something went wrong, please try again.</p>
+	}
+</EditForm>
+
+@inject DataAccess.SmartWorkoutContext SmartWorkoutContext;
 @code {
 
 
+	public Client newUser = new Client();
+	public bool saved = false;
+	public bool error = false;
+	private async Task SubmitForm()
+	{
+		saved = false;
+		error = false;
+		try{
+			SmartWorkoutContext.Users.Add(newUser);
+			await SmartWorkoutContext.SaveChangesAsync();
+			newUser = new Client();
+			saved = true;
+		}
+		catch (Exception)
+		{
+			error = true;
+			throw;
+		}
+
+	}
 }

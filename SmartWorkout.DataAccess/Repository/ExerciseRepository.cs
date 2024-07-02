@@ -19,9 +19,10 @@ namespace SmartWorkout.DataAccess.Repository
 			_context = context;
 		}
 
-		public void Add(in Exercise sender)
+		public void Add(Exercise exercise)
 		{
-			_context.Add(sender).State = EntityState.Added;
+			_context.Add(exercise);
+			_context.SaveChanges();
 		}
 
 		public IEnumerable<Exercise> GetAll()
@@ -40,19 +41,17 @@ namespace SmartWorkout.DataAccess.Repository
 			if (exercise is { })
 			{
 				_context.Exercises.Remove(exercise);
+				_context.SaveChanges();
 				return true;
 			}
 			return false;
 		}
 
-		public int Save(in Exercise sender)
-		{
-			return _context.SaveChanges();
-		}
 
-		public void Update(in Exercise sender)
+		public void Update(Exercise exercise)
 		{
-			_context.Entry(sender).State = EntityState.Modified;
+			_context.Update(exercise);
+			_context.SaveChanges();
 		}
 	}
 }
