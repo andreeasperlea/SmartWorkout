@@ -13,6 +13,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<SmartWorkoutContext>();
 builder.Services.AddScoped<IGenericRepository<Client>, ClientRepository>();
 builder.Services.AddScoped<IGenericRepository<Exercise>, ExerciseRepository>();
+builder.Services.AddScoped<IGenericRepository<Workout>,WorkoutRepository>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

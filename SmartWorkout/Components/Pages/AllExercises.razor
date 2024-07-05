@@ -1,0 +1,120 @@
+﻿@page "/exercises"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@using SmartWorkout.DataAccess.Repository
+@using SmartWorkout.Components.Shared
+@inject IGenericRepository<Exercise> ExerciseRepo;
+<h3>Exercises</h3>
+@if (Exercises == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div class="w-100">
+		<Search OnSearch="UpdateFilteredExercises" />
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(Exercise e in filteredExercises)
+			{
+				if (e.Id == editingExercise?.Id)
+				{
+					<tr>
+						<td>@e.Id</td>
+						<td><InputText @bind-Value="editingExercise.Name" class="form-control" /></td>
+						<td>
+							<button class="btn btn-primary" @onclick="() => SaveExercise(e.Id)">Save</button>
+							<button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+						</td>
+					</tr>
+				}
+				else
+					{
+						<tr>
+							<th>@e.Id</th>
+							<th>@e.Name</th>
+						</tr>
+				<td>
+					<button class="btn btn-primary" @onclick="() => EditExercise(e)">Edit</button>
+					<button class="btn btn-danger" @onclick="() => DeleteExercise(e.Id)">Delete</button>
+				</td>
+					}
+			}
+		</tbody>
+	</table>
+}
+@code {
+	List<Exercise> filteredExercises = new();
+	private DataAccess.Entities.Exercise[] Exercises;
+	private Exercise editingExercise = null;
+	protected override async Task OnInitializedAsync()
+	{
+		Exercises= ExerciseRepo.GetAll().ToArray();
+		filteredExercises = Exercises.ToList();
+	}
+
+	void UpdateFilteredExercises(string SearchTerm)
+	{
+		if (string.IsNullOrEmpty(SearchTerm))
+		{
+			filteredExercises = Exercises.ToList();
+		}
+		else
+		{
+			filteredExercises = Exercises.Where(Exercises =>
+				Exercises.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+			).ToList();
+		}
+	}
+
+	async Task DeleteExercise(int id)
+	{
+		var exercise = Exercises.FirstOrDefault(e => e.Id == id);
+		if (exercise != null)
+		{
+			ExerciseRepo.Remove(id);
+
+			Exercises= ExerciseRepo.GetAll().ToArray();
+			UpdateFilteredExercises(string.Empty);
+		}
+	}
+	void EditExercise(Exercise exercise)
+	{
+		editingExercise = new Exercise
+			{
+				Id = exercise.Id,
+				Name = exercise.Name
+			};
+	}
+
+	void CancelEdit()
+	{
+		editingExercise = null;
+	}
+	async Task SaveExercise(int id)
+	{
+		var exercise = Exercises.FirstOrDefault(e => e.Id == id);
+		if (Exercises!= null)
+		{
+			exercise.Name = editingExercise.Name;
+			
+
+			ExerciseRepo.Update(exercise);
+
+			
+			Exercises = ExerciseRepo.GetAll().ToArray();
+			UpdateFilteredExercises(string.Empty);
+			editingExercise = null;
+		}
+	}
+
+}

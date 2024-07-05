@@ -28,15 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Components\Pages\Exercises.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\Pages\Exercises.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Pages\Exercises.razor" />
+    <None Include="Components\Pages\AllExercises.razor" />
   </ItemGroup>
 
 </Project>
