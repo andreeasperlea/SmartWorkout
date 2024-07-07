@@ -1,0 +1,148 @@
+﻿@page "/allWorkouts"
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@inject IGenericRepository<Workout> WorkoutRepo;
+@using SmartWorkout.Components.Shared;
+@using SmartWorkout.DataAccess.IRepository
+<h3 class="mb-5">All Workouts:</h3>
+
+@if (Workouts == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div class="w-100">
+		<Search OnSearch="UpdateFilteredWorkouts" />
+	</div>
+
+	<div class="d-flex mt-5 mb-5 align-content-center justify-content-center w-100">
+		<a href="addExerciseToWorkout" class="text-decoration-none w-50">
+			<button class="form-control">Go To Add Exercise To Workout Page</button>
+		</a>
+		<a href="createWorkout" class="text-decoration-none w-50">
+			<button class="form-control w-100">Go To Add Workout Page</button>
+		</a>
+	</div>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Client Name</th>
+				<th>Client Surname</th>
+				<th>Duration</th>
+				<th>Date</th>
+				<th>Exercises</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(Workout w in filteredWorkouts)
+			{
+				if (w.Id == editingWorkout?.Id)
+				{
+					<tr>
+						<td>@w.Id</td>
+						<td><InputDate @bind-Value="editingWorkout.Date" class="form-control" /></td>
+						<td>
+							<button class="btn btn-primary" @onclick="() => SaveWorkout(w.Id)">Save</button>
+							<button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+						</td>
+					</tr>
+				}
+				else
+				{
+					<tr>
+						<td>@w.Id</td>
+						<td>@w.Client.Name</td>
+						<td>@w.Client.Surname</td>
+						<td>@w.Duration</td>
+						<td>@w.Date</td>
+
+						<td>
+							@foreach (ExerciseLog el in w.ExerciseLogs)
+							{
+								@el.Exercise.Name 
+							}
+						</td>
+						
+						<td>
+							<button class="btn btn-primary" @onclick="() => EditWorkout(w)">Edit</button>
+							<button class="btn btn-danger" @onclick="() => DeleteWorkout(w.Id)">Delete</button>
+						</td>
+					</tr>
+					
+				}
+			}
+		</tbody>
+		</table>
+}
+@code {
+	List<Workout> filteredWorkouts = new();
+	private DataAccess.Entities.Workout[] Workouts;
+	private Workout editingWorkout = null;
+	protected override async Task OnInitializedAsync()
+	{
+		Workouts = WorkoutRepo.GetAll().ToArray();
+		filteredWorkouts = Workouts.ToList();
+	}
+	void UpdateFilteredWorkouts(string SearchTerm)
+	{
+		if (string.IsNullOrEmpty(SearchTerm))
+		{
+			filteredWorkouts = Workouts.ToList();
+		}
+		else
+		{
+			filteredWorkouts = Workouts.Where(w =>
+				w.Client.Name == SearchTerm || w.Client.Surname == SearchTerm
+			).ToList();
+		}
+	}
+
+	async Task DeleteWorkout(int id)
+	{
+		var workout = Workouts.FirstOrDefault(w => w.Id == id);
+		if (workout != null)
+		{
+			WorkoutRepo.Remove(id);
+
+			Workouts = WorkoutRepo.GetAll().ToArray();
+			UpdateFilteredWorkouts(string.Empty);
+		}
+	}
+	void EditWorkout(Workout workout)
+	{
+		editingWorkout = new Workout
+			{
+				Id = workout.Id,
+				ClientId=workout.ClientId,
+				Duration=workout.Duration,
+				Date=workout.Date,
+
+			};
+	}
+
+	void CancelEdit()
+	{
+		editingWorkout = null;
+	}
+	async Task SaveWorkout(int id)
+	{
+		var workout = Workouts.FirstOrDefault(w => w.Id == id);
+		if (Workouts != null)
+		{
+			//exercise.Name = editingExercise.Name;
+
+
+			WorkoutRepo.Update(workout);
+
+
+			Workouts = WorkoutRepo.GetAll().ToArray();
+			UpdateFilteredWorkouts(string.Empty);
+			editingWorkout = null;
+		}
+	}
+
+}

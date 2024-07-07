@@ -12,6 +12,7 @@ namespace SmartWorkout.DataAccess.Configurations
 	{
 		public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<ExerciseLog> builder)
 		{
+			builder.ToTable("ExerciseLog");
 			builder.HasKey(el => new { el.WorkoutId, el.ExerciseId });
 			builder
 			.HasOne(el => el.Workout)

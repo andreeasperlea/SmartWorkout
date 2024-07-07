@@ -27,7 +27,10 @@ namespace SmartWorkout.DataAccess.Repository
 
 		public IEnumerable<Workout> GetAll()
 		{
-			return _context.Workouts.ToList();
+			return _context.Workouts
+				.Include(w => w.Client)
+				.Include(w => w.ExerciseLogs)
+				.ThenInclude(el => el.Exercise).ToList();
 		}
 
 		public Workout? GetById(int Id)

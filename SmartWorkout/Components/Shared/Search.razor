@@ -1,10 +1,11 @@
-﻿<input  class="form-control" style="max-width:600px" placeholder="Search..." 
-			@bind="searchItem"/>
-<br>
-<button class="form-control" style="max-width:300px"
-			@onclick=OnSearchClicked>
-			Search</button>
+﻿<div class="d-flex">
+	<input  class="form-control me-5" style="max-width:600px" placeholder="Search..." 
+				@bind="searchItem"/>
 
+	<button class="form-control" style="max-width:300px"
+				@onclick=OnSearchClicked>
+				Search</button>
+</div>
 @code {
 	
 	[Parameter]

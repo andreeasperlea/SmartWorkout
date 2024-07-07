@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Components\Pages\AddExerciseToWorkout.razor" />
     <None Include="Components\Pages\AllExercises.razor" />
   </ItemGroup>
 

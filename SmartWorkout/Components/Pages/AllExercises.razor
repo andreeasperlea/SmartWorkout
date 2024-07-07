@@ -42,11 +42,11 @@ else
 						<tr>
 							<th>@e.Id</th>
 							<th>@e.Name</th>
+						<td>
+							<button class="btn btn-primary" @onclick="() => EditExercise(e)">Edit</button>
+							<button class="btn btn-danger" @onclick="() => DeleteExercise(e.Id)">Delete</button>
+						</td>
 						</tr>
-				<td>
-					<button class="btn btn-primary" @onclick="() => EditExercise(e)">Edit</button>
-					<button class="btn btn-danger" @onclick="() => DeleteExercise(e.Id)">Delete</button>
-				</td>
 					}
 			}
 		</tbody>
