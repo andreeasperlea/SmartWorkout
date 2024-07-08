@@ -16,6 +16,23 @@ else
 	<div class="w-100">
 		<Search OnSearch="UpdateFilteredExercises" />
 	</div>
+	<EditForm FormName="AddExercise" Model="newExercise" OnValidSubmit="SubmitForm">
+		<div class="form-group mb-3">
+			<h3>Add new exercise:</h3>
+			<label for="name">Name</label>
+			<InputText @bind-Value="@newExercise.Name"></InputText>
+			<ValidationMessage For="@(() => newExercise.Name)" />
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+		@if (saved)
+		{
+			<p>The exercise has been created!</p>
+		}
+		@if (error)
+		{
+			<p>Something went wrong, please try again.</p>
+		}
+	</EditForm>
 	<table class="table">
 		<thead>
 			<tr>
@@ -52,7 +69,11 @@ else
 		</tbody>
 	</table>
 }
+@inject DataAccess.SmartWorkoutContext SmartWorkoutContext;
 @code {
+	public Exercise newExercise = new Exercise();
+	public bool saved = false;
+	public bool error = false;
 	List<Exercise> filteredExercises = new();
 	private DataAccess.Entities.Exercise[] Exercises;
 	private Exercise editingExercise = null;
@@ -115,6 +136,24 @@ else
 			UpdateFilteredExercises(string.Empty);
 			editingExercise = null;
 		}
+	}
+	private async Task SubmitForm()
+	{
+		saved = false;
+		error = false;
+		try
+		{
+			SmartWorkoutContext.Exercises.Add(newExercise);
+			await SmartWorkoutContext.SaveChangesAsync();
+			newExercise = new Exercise();
+			saved = true;
+		}
+		catch (Exception)
+		{
+			error = true;
+			throw;
+		}
+
 	}
 
 }

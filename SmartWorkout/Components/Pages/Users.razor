@@ -7,36 +7,81 @@
 @using SmartWorkout.DataAccess.Entities
 @using SmartWorkout.DataAccess.IRepository
 @using SmartWorkout.DataAccess.Repository
-<h3 class="mb-5">Add Client</h3>
+<style>
+	.form{
+		margin-left:400px;
+	}
 
-<EditForm FormName="AddUser" OnValidSubmit="SubmitForm" Model="@newUser" class="">
+	.input-text {
+		width: clamp(120px, 50vw, 420px);
+		height: 2.5rem;
+		padding: 0 1.25rem;
+		border: 1px solid $black;
+		border-radius: 2px;
+		margin: 0.625rem auto;
+		transition: all 250ms;
+		border-radius: 4px;
+	}
+	.label{
+		font-weight: bold;
+	}
+
+	.btn {
+		background-color: white;
+		color: black;
+		border: 2px solid #04AA6D;
+		margin-left:15px;
+		width:50%;
+	}
+	
+	.btn:hover {
+		background-color: #04AA6D; 
+		color: white;
+		border: 2px solid #04AA6D;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+	}
+
+	
+
+</style>
+
+<EditForm  FormName="AddUser" OnValidSubmit="SubmitForm" Model="@newUser" class="form">
 	<DataAnnotationsValidator/>
+	<div class="container">
+	<h3 class="mb-5">Add Client</h3>
+	<link href="css/my-styles.css" rel="stylesheet" />
 	<div class="form-group mb-3">
-		<label for="first-name">First Name</label>
-		<InputText @bind-Value="@newUser.Name"></InputText>
+		<label for="first-name" class="label">First Name</label>
+		<br />
+		<InputText class="input-text" @bind-Value="@newUser.Name"></InputText>
 		<ValidationMessage For="@(() => newUser.Name)"/>
 	</div>
 	<div class="form-group mb-3">
-		<label for="last-name">Last Name</label>
-		<InputText @bind-Value="@newUser.Surname"></InputText>
+		<label for="last-name" class="label">Last Name</label>
+		<br />
+		<InputText class="input-text" @bind-Value="@newUser.Surname"></InputText>
 		<ValidationMessage For="@(() => newUser.Surname)" />
 	</div>
 	<div class="mb-3 w-25">
-		<label for="exampleInputEmail1" class="form-label">Email address</label>
-		<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-		<InputText @bind-Value="@newUser.Email"></InputText>
+		<label for="exampleInputEmail1" class="label">Email address</label>
+		<br />
+		<InputText class="input-text" @bind-Value="@newUser.Email"></InputText>
 	</div>
 	<div class="form-group mb-3">
-		<label for="phone-number">Phone Number</label>
-		<InputText @bind-Value="@newUser.Phone"></InputText>
+		<label for="phone-number" class="label">Phone Number</label>
+		<br />
+		<InputText class="input-text" @bind-Value="@newUser.Phone"></InputText>
 	</div>
 	<div class="form-group mb-3">
-		<label for="weight">Weight (in kg)</label>
-		<InputNumber @bind-Value="@newUser.Weight"></InputNumber>
+		<label for="weight" class="label">Weight (in kg)</label>
+		<br />
+		<InputNumber class="input-text" @bind-Value="@newUser.Weight"></InputNumber>
 	</div>
 	<div class="form-group mb-3">
-		<label for="age">Age</label>
-		<InputNumber @bind-Value="@newUser.Age"></InputNumber>
+		<label for="age" class="label">Age</label>
+		<br />
+		<InputNumber class="input-text" @bind-Value="@newUser.Age"></InputNumber>
+	</div>
 	</div>
 	<button type="submit" class="btn btn-primary">Submit</button>
 
