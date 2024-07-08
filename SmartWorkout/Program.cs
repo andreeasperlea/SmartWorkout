@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using SmartWorkout;
 using SmartWorkout.Components;
 using SmartWorkout.DataAccess;
 using SmartWorkout.DataAccess.Entities;
@@ -14,6 +16,10 @@ builder.Services.AddDbContext<SmartWorkoutContext>();
 builder.Services.AddScoped<IGenericRepository<Client>, ClientRepository>();
 builder.Services.AddScoped<IGenericRepository<Exercise>, ExerciseRepository>();
 builder.Services.AddScoped<IGenericRepository<Workout>,WorkoutRepository>();
+
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthenticationCore();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -30,5 +36,6 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
 	.AddInteractiveServerRenderMode();
+
 
 app.Run();
