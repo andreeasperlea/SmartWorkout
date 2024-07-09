@@ -22,6 +22,7 @@ namespace SmartWorkout.DataAccess
 		}
 
 		public DbSet<Client> Users { get; set; }
+		public DbSet<AdminUser> AdminUsers { get; set; }
 		public DbSet<Workout > Workouts { get; set; }
 		public DbSet<Exercise> Exercises {  get; set; } 
 		

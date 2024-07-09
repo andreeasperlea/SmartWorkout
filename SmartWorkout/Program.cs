@@ -20,6 +20,8 @@ builder.Services.AddScoped<IGenericRepository<Workout>,WorkoutRepository>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthenticationCore();
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -34,8 +36,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapRazorComponents<App>()
 	.AddInteractiveServerRenderMode();
 
+app.MapControllers();
 
 app.Run();
