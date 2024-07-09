@@ -6,6 +6,7 @@
 @inject IGenericRepository<Client> ClientRepo;
 @inject IGenericRepository<Workout> WorkoutRepo;
 @inject IGenericRepository<Exercise> ExerciseRepo;
+@inject IGenericRepository<ExerciseLog> ExerciseLogRepo;
 
 
 <EditForm FormName="Add Exercise" OnValidSubmit="SubmitFormExercise" Model="newExercise" class="">
@@ -75,8 +76,6 @@
 </EditForm>
 
 
-@inject DataAccess.SmartWorkoutContext SmartWorkoutContext;
-
 
 @code {
 	[Parameter]
@@ -85,7 +84,6 @@
 	int selectedWorkoutId = new();
 	List<Workout> Workouts = new();
 	List<Exercise> Exercises = new();
-	//private DataAccess.Entities.Exercise[] Exercise;
 	List<Client> Clients = new();
 	private DataAccess.Entities.Client[] Users;
 	public SmartWorkout.DataAccess.Entities.Workout newWorkout = new Workout();
@@ -118,8 +116,7 @@
 
 			newExerciseLog.ExerciseId = newExercise.Id;
 			newExerciseLog.WorkoutId = selectedWorkoutId;
-			SmartWorkoutContext.ExerciseLogs.Add(newExerciseLog);
-			await SmartWorkoutContext.SaveChangesAsync();
+			ExerciseLogRepo.Add(newExerciseLog);
 
 			newWorkout = new Workout();
 			newExercise = new Exercise();

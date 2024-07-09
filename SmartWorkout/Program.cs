@@ -14,6 +14,7 @@ builder.Services.AddDbContext<SmartWorkoutContext>();
 builder.Services.AddScoped<IGenericRepository<Client>, ClientRepository>();
 builder.Services.AddScoped<IGenericRepository<Exercise>, ExerciseRepository>();
 builder.Services.AddScoped<IGenericRepository<Workout>,WorkoutRepository>();
+builder.Services.AddScoped<IGenericRepository<ExerciseLog>, ExerciseLogRepository>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

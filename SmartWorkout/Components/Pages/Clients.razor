@@ -71,7 +71,7 @@ else
 @code {
 	List<Client> filteredUsers = new();
 	private DataAccess.Entities.Client[] Users;
-	private Client editingUser = null;
+	private Client? editingUser = null;
 	protected override async Task OnInitializedAsync()
 	{
 		Users = ClientRepo.GetAll().ToArray();
@@ -93,7 +93,7 @@ else
 		}
 	}
 
-	async Task DeleteUser(int id)
+	void DeleteUser(int id)
 	{
 		var user = Users.FirstOrDefault(u => u.Id == id);
 		if (user != null)
@@ -122,7 +122,7 @@ else
 	{
 		editingUser = null;
 	}
-	async Task SaveUser(int id)
+	void SaveUser(int id)
 	{
 		var user = Users.FirstOrDefault(u => u.Id == id);
 		if (user != null)
@@ -136,7 +136,6 @@ else
 
 			ClientRepo.Update(user);
 
-			// Refresh the user list
 			Users = ClientRepo.GetAll().ToArray();
 			UpdateFilteredUsers(string.Empty);
 			editingUser = null;

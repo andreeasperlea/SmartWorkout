@@ -30,7 +30,7 @@ else
 				<th>Client Name</th>
 				<th>Client Surname</th>
 				<th>Duration</th>
-				<th>Date</th>
+				<th><button @onclick="SortWorkoutsByDate" class="sortDateButton text-primary">Date</button></th>
 				<th>Exercises</th>
 			</tr>
 		</thead>
@@ -84,7 +84,7 @@ else
 @code {
 	List<Workout> filteredWorkouts = new();
 	private DataAccess.Entities.Workout[] Workouts;
-	private Workout editingWorkout = null;
+	private Workout? editingWorkout = null;
 	protected override async Task OnInitializedAsync()
 	{
 		Workouts = WorkoutRepo.GetAll().ToArray();
@@ -104,7 +104,7 @@ else
 		}
 	}
 
-	async Task DeleteWorkout(int id)
+	void DeleteWorkout(int id)
 	{
 		var workout = Workouts.FirstOrDefault(w => w.Id == id);
 		if (workout != null)
@@ -131,13 +131,11 @@ else
 	{
 		editingWorkout = null;
 	}
-	async Task SaveWorkout(int id)
+	void SaveWorkout(int id)
 	{
 		var workout = Workouts.FirstOrDefault(w => w.Id == id);
-		if (Workouts != null)
+		if (Workouts != null && workout != null)
 		{
-			//exercise.Name = editingExercise.Name;
-
 
 			WorkoutRepo.Update(workout);
 
@@ -146,6 +144,10 @@ else
 			UpdateFilteredWorkouts(string.Empty);
 			editingWorkout = null;
 		}
+	}
+	void SortWorkoutsByDate()
+	{
+		filteredWorkouts = filteredWorkouts.OrderByDescending(w => w.Date).ToList();
 	}
 
 }

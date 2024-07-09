@@ -68,14 +68,14 @@ else
 		</tbody>
 	</table>
 }
-@inject DataAccess.SmartWorkoutContext SmartWorkoutContext;
+
 @code {
 	public Exercise newExercise = new Exercise();
 	public bool saved = false;
 	public bool error = false;
 	List<Exercise> filteredExercises = new();
 	private DataAccess.Entities.Exercise[] Exercises;
-	private Exercise editingExercise = null;
+	private Exercise? editingExercise = null;
 	protected override async Task OnInitializedAsync()
 	{
 		Exercises= ExerciseRepo.GetAll().ToArray();
@@ -96,7 +96,7 @@ else
 		}
 	}
 
-	async Task DeleteExercise(int id)
+	void DeleteExercise(int id)
 	{
 		var exercise = Exercises.FirstOrDefault(e => e.Id == id);
 		if (exercise != null)
@@ -120,30 +120,28 @@ else
 	{
 		editingExercise = null;
 	}
-	async Task SaveExercise(int id)
+	void SaveExercise(int id)
 	{
 		var exercise = Exercises.FirstOrDefault(e => e.Id == id);
-		if (Exercises!= null)
+		if (Exercises!= null && exercise != null && editingExercise != null)
 		{
 			exercise.Name = editingExercise.Name;
-			
 
 			ExerciseRepo.Update(exercise);
 
-			
+
 			Exercises = ExerciseRepo.GetAll().ToArray();
 			UpdateFilteredExercises(string.Empty);
 			editingExercise = null;
 		}
 	}
-	private async Task SubmitForm()
+	private void SubmitForm()
 	{
 		saved = false;
 		error = false;
 		try
 		{
-			SmartWorkoutContext.Exercises.Add(newExercise);
-			await SmartWorkoutContext.SaveChangesAsync();
+			ExerciseRepo.Add(newExercise);
 			newExercise = new Exercise();
 			saved = true;
 		}

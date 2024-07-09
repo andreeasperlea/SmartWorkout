@@ -5,6 +5,7 @@
 @inject IGenericRepository<Client> ClientRepo;
 @inject IGenericRepository<Workout> WorkoutRepo;
 @inject IGenericRepository<Exercise> ExerciseRepo;
+@inject IGenericRepository<ExerciseLog> ExerciseLogRepo;
 
 
 <EditForm FormName="Add Workout" OnValidSubmit="SubmitFormWorkout" Model="newWorkout" class="">
@@ -72,8 +73,6 @@
 {
 	<p>Something went wrong, please try again.</p>
 }
-@inject DataAccess.SmartWorkoutContext SmartWorkoutContext;
-
 
 @code {
 	List<Exercise> Exercises = new();
@@ -99,13 +98,11 @@
 		try
 		{
 			newWorkout.Duration = Convert.ToInt32(newExerciseLog.Duration);
-			SmartWorkoutContext.Workouts.Add(newWorkout);
-			await SmartWorkoutContext.SaveChangesAsync();
+			WorkoutRepo.Add(newWorkout);
 
 			newExerciseLog.ExerciseId = newExercise.Id;
 			newExerciseLog.WorkoutId = newWorkout.Id;
-			SmartWorkoutContext.ExerciseLogs.Add(newExerciseLog);
-			await SmartWorkoutContext.SaveChangesAsync();
+			ExerciseLogRepo.Add(newExerciseLog);
 
 			newWorkout = new Workout();
 			newExercise = new Exercise();
