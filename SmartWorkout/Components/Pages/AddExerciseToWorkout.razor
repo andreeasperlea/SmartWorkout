@@ -1,4 +1,5 @@
 ﻿@page "/addExerciseToWorkout"
+@page "/addExerciseToWorkout/{redirectedWorkoutId:int}"
 @using SmartWorkout.DataAccess
 @using SmartWorkout.DataAccess.Entities
 @using SmartWorkout.DataAccess.IRepository
@@ -8,55 +9,59 @@
 
 
 <EditForm FormName="Add Exercise" OnValidSubmit="SubmitFormExercise" Model="newExercise" class="">
-	<label for="workout" class="col-sm-2 col-form-label">
-		Choose a Workout:
-	</label>
-	<br />
-	<InputSelect id="Workout" @bind-Value="selectedWorkoutId">
-		@foreach (Workout w in Workouts)
-		{
-			<option value="@w.Id">@w.Id</option>
-		}
-	</InputSelect>
 
+	<div class="form-group mb-3">
+		<label for="workout" class="col-sm-2 col-form-label">
+			Choose a Workout:
+		</label>
+		<br />
+		<InputSelect id="Workout" class="form-control" @bind-Value="selectedWorkoutId">
+			@foreach (Workout w in Workouts)
+			{
+				<option value="@w.Id">@w.Id</option>
+			}
+		</InputSelect>
+	</div>
 
 	<div class="form-group mb-3">
 		<label for="date">Date</label>
 		<br />
-		<InputDate @bind-Value="@newWorkout.Date"></InputDate>
+		<InputDate class="form-control" @bind-Value="@newWorkout.Date"></InputDate>
 	</div>
 
 	<DataAnnotationsValidator />
-	<label for="exercise" class="col-sm-2 col-form-label">
-		Choose an Exercise:
-	</label>
-	<br />
-	<InputSelect id="Exercise" @bind-Value="newExercise.Id">
-		@foreach (Exercise e in Exercises)
-		{
-			<option value="@e.Id">@e.Name</option>
-		}
-	</InputSelect>
+	<div class="form-group mb-3">
+		<label for="exercise" class="col-sm-2 col-form-label">
+			Choose an Exercise:
+		</label>
+		<br />
+		<InputSelect class="form-control" id="Exercise" @bind-Value="newExercise.Id">
+			@foreach (Exercise e in Exercises)
+			{
+				<option value="@e.Id">@e.Name</option>
+			}
+		</InputSelect>
+	</div>
 
 	<div class="form-group mb-3">
 		<label for="first-name">Weights(leave empty if you didn't use any)</label>
 		<br />
-		<InputNumber @bind-Value="@newExerciseLog.Weight"></InputNumber>
+		<InputNumber class="form-control" @bind-Value="@newExerciseLog.Weight"></InputNumber>
 	</div>
 	<div class="form-group mb-3">
 		<label for="first-name">Sets</label>
 		<br />
-		<InputNumber @bind-Value="@newExerciseLog.Sets"></InputNumber>
+		<InputNumber class="form-control" @bind-Value="@newExerciseLog.Sets"></InputNumber>
 	</div>
 	<div class="form-group mb-3">
 		<label for="first-name">Duration(in minutes)</label>
 		<br />
-		<InputNumber @bind-Value="@newExerciseLog.Duration"></InputNumber>
+		<InputNumber class="form-control" @bind-Value="@newExerciseLog.Duration"></InputNumber>
 	</div>
 	<div class="form-group mb-3">
 		<label for="first-name">Distance in km(leave empty if it's not the case)</label>
 		<br />
-		<InputNumber @bind-Value="@newExerciseLog.Distance"></InputNumber>
+		<InputNumber class="form-control" @bind-Value="@newExerciseLog.Distance"></InputNumber>
 	</div>
 	<button type="submit" class="btn btn-primary">Submit</button>
 	@if (savedExercise)
@@ -74,6 +79,9 @@
 
 
 @code {
+	[Parameter]
+	public int redirectedWorkoutId { get; set; } = -1;
+
 	int selectedWorkoutId = new();
 	List<Workout> Workouts = new();
 	List<Exercise> Exercises = new();
@@ -91,6 +99,11 @@
 		Clients = Users.ToList();
 		Exercises = ExerciseRepo.GetAll().ToList();
 		Workouts = WorkoutRepo.GetAll().ToList();
+
+		if (redirectedWorkoutId != -1)
+		{
+			selectedWorkoutId = redirectedWorkoutId;
+		}
 
 	}
 	private async Task SubmitFormExercise()

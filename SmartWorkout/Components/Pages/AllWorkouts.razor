@@ -5,7 +5,13 @@
 @inject IGenericRepository<Workout> WorkoutRepo;
 @using SmartWorkout.Components.Shared;
 @using SmartWorkout.DataAccess.IRepository
-<h3 class="mb-5">All Workouts:</h3>
+
+<h3 class="mb-3">All Workouts:</h3>
+<div class="d-flex mb-5 justify-content w-100">
+	<a href="createWorkout" class="text-decoration-none w-100">
+		<button class="form-control w-100">Create New Workout</button>
+	</a>
+</div>
 
 @if (Workouts == null)
 {
@@ -15,12 +21,6 @@ else
 {
 	<div class="w-100">
 		<Search OnSearch="UpdateFilteredWorkouts" />
-	</div>
-
-	<div class="d-flex mt-3 mb-3 justify-content w-100">
-		<a href="createWorkout" class="text-decoration-none w-50">
-			<button class="form-control w-100">Add Workout</button>
-		</a>
 	</div>
 
 	<table class="table">
@@ -60,7 +60,7 @@ else
 						<td>
 							@foreach (ExerciseLog el in w.ExerciseLogs)
 							{
-								@el.Exercise.Name 
+								@String.Concat(el.Exercise.Name, " ")
 							}
 						</td>
 						
@@ -68,11 +68,11 @@ else
 							<div>
 								<button class="btn btn-primary" @onclick="() => EditWorkout(w)">Edit</button>
 								<button class="btn btn-danger" @onclick="() => DeleteWorkout(w.Id)">Delete</button>
+								
+								<a href="@String.Concat("addExerciseToWorkout/",@w.Id)" class="text-decoration-none w-50">
+									<button class="btn btn-warning">Add an exercise to this workout</button>
+								</a>
 							</div>
-							<br />
-							<a href="addExerciseToWorkout" class="text-decoration-none w-50">
-								<button class="form-control">Add Exercise</button>
-							</a>
 						</td>
 					</tr>
 					

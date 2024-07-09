@@ -16,13 +16,12 @@ else
 	<div class="w-100">
 		<Search OnSearch="UpdateFilteredExercises" />
 	</div>
-	<EditForm FormName="AddExercise" Model="newExercise" OnValidSubmit="SubmitForm">
-		<div class="form-group mb-3">
-			<h3>Add new exercise:</h3>
-			<label for="name">Name</label>
-			<InputText @bind-Value="@newExercise.Name"></InputText>
+	<EditForm FormName="AddExercise" Model="newExercise" OnValidSubmit="SubmitForm" class="mt-3">
+		<h3>Add new exercise:</h3>
+		<div class="form-group mb-3 d-flex">
+			<InputText style="max-width:600px"  class="form-control me-5" placeholder="Name" @bind-Value="@newExercise.Name"></InputText>
 			<ValidationMessage For="@(() => newExercise.Name)" />
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button style ="max-width:300px" class="form-control" type="submit">Submit</button>
 		</div>
 		@if (saved)
 		{
