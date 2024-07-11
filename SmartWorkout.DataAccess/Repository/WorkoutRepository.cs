@@ -40,10 +40,10 @@ namespace SmartWorkout.DataAccess.Repository
 
 		public bool Remove(int Id)
 		{
-			var exercise = _context.Exercises.Find(Id);
-			if (exercise != null)
+			var workout = _context.Workouts.Find(Id);
+			if (workout != null)
 			{
-				_context.Exercises.Remove(exercise);
+				_context.Workouts.Remove(workout);
 				_context.SaveChanges();
 				return true;
 			}

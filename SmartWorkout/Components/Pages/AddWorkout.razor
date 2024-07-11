@@ -76,7 +76,6 @@
 
 @code {
 	List<Exercise> Exercises = new();
-	//private DataAccess.Entities.Exercise[] Exercise;
 	List<Client> Clients = new();
 	private DataAccess.Entities.Client[] Users;
 	public SmartWorkout.DataAccess.Entities.Workout newWorkout = new Workout();
@@ -89,6 +88,7 @@
 		Users = ClientRepo.GetAll().ToArray();
 		Clients = Users.ToList();
 		Exercises = ExerciseRepo.GetAll().ToList();
+		newWorkout.Date = DateTime.Now;
 
 	}
 	private async Task SubmitFormWorkout()

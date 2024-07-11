@@ -5,6 +5,8 @@
 @inject IGenericRepository<Workout> WorkoutRepo;
 @using SmartWorkout.Components.Shared;
 @using SmartWorkout.DataAccess.IRepository
+@inject IGenericRepository<ExerciseLog> ExerciseLogRepo;
+
 
 <h3 class="mb-3">All Workouts:</h3>
 <div class="d-flex mb-5 justify-content w-100">
@@ -30,7 +32,7 @@ else
 				<th>Client Name</th>
 				<th>Client Surname</th>
 				<th>Duration</th>
-				<th><button @onclick="SortWorkoutsByDate" class="sortDateButton text-primary">Date</button></th>
+				<th><button @onclick="SortWorkoutsByDate" class="clickableTextButtonStyle text-primary">Date</button></th>
 				<th>Exercises</th>
 			</tr>
 		</thead>
@@ -60,13 +62,16 @@ else
 						<td>
 							@foreach (ExerciseLog el in w.ExerciseLogs)
 							{
-								@String.Concat(el.Exercise.Name, " ")
+								<a href="@String.Concat("exerciseDetails/",@el.ExerciseId,"/",@el.WorkoutId)" class="text-decoration-none w-50" style="margin-right: 3px;">
+									<button class="clickableTextButtonStyle text-primary exercisesOutline">@String.Concat(el.Exercise.Name)</button>
+								</a>
 							}
 						</td>
 						
 						<td>
 							<div>
 								<button class="btn btn-primary" @onclick="() => EditWorkout(w)">Edit</button>
+								
 								<button class="btn btn-danger" @onclick="() => DeleteWorkout(w.Id)">Delete</button>
 								
 								<a href="@String.Concat("addExerciseToWorkout/",@w.Id)" class="text-decoration-none w-50">
@@ -83,6 +88,7 @@ else
 }
 @code {
 	List<Workout> filteredWorkouts = new();
+	private DataAccess.Entities.ExerciseLog[] ExerciseLogs;
 	private DataAccess.Entities.Workout[] Workouts;
 	private Workout? editingWorkout = null;
 	protected override async Task OnInitializedAsync()
@@ -149,5 +155,4 @@ else
 	{
 		filteredWorkouts = filteredWorkouts.OrderByDescending(w => w.Date).ToList();
 	}
-
 }

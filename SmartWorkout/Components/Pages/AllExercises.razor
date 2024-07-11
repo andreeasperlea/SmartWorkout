@@ -144,6 +144,9 @@ else
 			ExerciseRepo.Add(newExercise);
 			newExercise = new Exercise();
 			saved = true;
+			Exercises = ExerciseRepo.GetAll().ToArray();
+			filteredExercises = Exercises.ToList();
+			UpdateFilteredExercises(string.Empty);
 		}
 		catch (Exception)
 		{

@@ -2,9 +2,20 @@
     text-align: center;
 }
 
-.sortDateButton{
+.clickableTextButtonStyle {
     border: none;
     background-color: white;
     padding: 0;
     font-weight: 600;
+}
+.showExerciseDetails {
+    border: none;
+    background-color: white;
+    padding: 0;
+    font-weight: 600;
+}
+
+.exercisesOutline{
+    border: 1px solid blue;
+    padding: 5px;
 }

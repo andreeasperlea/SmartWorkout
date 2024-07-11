@@ -1,0 +1,53 @@
+﻿@page "/exerciseDetails/{redirectedExerciseId:int}/{redirectedWorkoutId:int}"
+@using SmartWorkout.DataAccess
+@using SmartWorkout.DataAccess.Entities
+@using SmartWorkout.DataAccess.IRepository
+@inject IGenericRepository<ExerciseLog> ExerciseLogRepo;
+@inject IGenericRepository<Exercise> ExerciseRepo;
+<h3>ExerciseDetails</h3>
+@if (exerciseLog == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Workout Id</th>
+				<th>Client Id</th>
+				<th>Exercise Name</th>
+				<th>Sets</th>
+				<th>Reps</th>
+				<th>Distance</th>
+				<th>Duration</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@redirectedWorkoutId</td>
+				<td>@redirectedExerciseId</td>
+				<td>@ExerciseRepo.GetAll().FirstOrDefault(e => e.Id == redirectedExerciseId)?.Name</td>
+				<td>@exerciseLog.Sets</td>
+				<td>@exerciseLog.Reps</td>
+				<td>@exerciseLog.Distance</td>
+				<td>@exerciseLog.Duration</td>
+			</tr>
+		</tbody>
+		</table>
+}
+@code {
+	[Parameter]
+	public int redirectedWorkoutId { get; set; } = -1;
+
+	[Parameter]
+	public int redirectedExerciseId { get; set; } = -1;
+
+	private ExerciseLog? exerciseLog;
+
+	protected override async Task OnInitializedAsync()
+	{
+		exerciseLog = ExerciseLogRepo.GetAll().FirstOrDefault(el => el.ExerciseId == redirectedExerciseId && el.WorkoutId == redirectedWorkoutId);
+		
+	}
+}
